@@ -8,18 +8,17 @@ router.route('/testimonials').get((req, res) => {
     res.json(db.testimonials);
 });
 
+router.route('/testimonials/random').get((req, res) => {
+
+  const randomItem = db.testimonials[Math.floor(Math.random()*db.testimonials.length)];
+
+  res.json(randomItem);
+});
+
 router.route('/testimonials/:id').get((req, res) => {
 
     const { id } = req.params;
-
-    res.json(db.testimonials.filter(item => item.id == id));
-});
-
-router.route('/testimonials/random').get((req, res) => {
-
-    const randomItem = db.testimonials[Math.floor(Math.random()*db.testimonials.length)];
-
-    res.json(randomItem);
+    res.json(db.testimonials.find(item => item.id == id));
 });
 
 router.route('/testimonials').post((req, res) => {
@@ -36,13 +35,15 @@ router.route('/testimonials').post((req, res) => {
 
 router.route('/testimonials/:id').put((req, res) => {
 
-    const {author, text}  = req.body;
+    const { author, text }  = req.body;
     const { id } = req.params;
 
-    db.testimonials.map(item =>
-      item.id === id ?
+    db.testimonials = db.testimonials.map(item =>
+      item.id == id ?
       {...item, author: author, text: text}
       : item);
+
+    console.log('db.testimonials:', db.testimonials);
     res.json({ message: 'OK' });
   });
 
@@ -50,7 +51,8 @@ router.route('/testimonials/:id').delete((req, res) => {
 
     const { id } = req.params;
 
-    db.testimonials.filter(item => item.id !== id);
+    db.testimonials = db.testimonials.filter(item => item.id != id);
+    console.log('db.testimonials:', db.testimonials);
     res.json({ message: 'OK' });
   });
 

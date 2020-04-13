@@ -12,7 +12,7 @@ router.route('/concerts/:id').get((req, res) => {
 
     const { id } = req.params;
 
-    res.json(db.concerts.filter(item => item.id == id));
+    res.json(db.concerts.find(item => item.id == id));
 });
 
 router.route('/concerts').post((req, res) => {
@@ -35,10 +35,12 @@ router.route('/concerts/:id').put((req, res) => {
     const { performer, genre, price, day }  = req.body;
     const { id } = req.params;
 
-    db.concerts.map(item =>
-      item.id === id ?
+    db.concerts = db.concerts.map(item =>
+      item.id == id ?
       {...item, performer: performer, genre: genre, price: price, day: day, image: image}
       : item);
+
+    console.log('db.concerts:', db.concerts);
     res.json({ message: 'OK' });
   });
 
@@ -46,7 +48,8 @@ router.route('/concerts/:id').delete((req, res) => {
 
     const { id } = req.params;
 
-    db.concerts.filter(item => item.id !== id);
+    db.concerts = db.concerts.filter(item => item.id != id);
+    console.log('db.concerts:', db.concerts);
     res.json({ message: 'OK' });
   });
 

@@ -12,7 +12,7 @@ router.route('/seats/:id').get((req, res) => {
 
     const { id } = req.params;
 
-    res.json(db.seats.filter(item => item.id == id));
+    res.json(db.seats.find(item => item.id == id));
 });
 
 router.route('/seats').post((req, res) => {
@@ -35,10 +35,12 @@ router.route('/seats/:id').put((req, res) => {
     const { day, seat, client, email }  = req.body;
     const { id } = req.params;
 
-    db.seats.map(item =>
+    db.seats = db.seats.map(item =>
       item.id === id ?
       {...item, day: day, seat: seat, client: client, email:email}
       : item);
+
+    console.log('db.seats:', db.seats);
     res.json({ message: 'OK' });
   });
 
@@ -46,7 +48,8 @@ router.route('/seats/:id').delete((req, res) => {
 
     const { id } = req.params;
 
-    db.seats.filter(item => item.id !== id);
+    db.seats = db.seats.filter(item => item.id != id);
+    console.log('db.seats:', db.seats);
     res.json({ message: 'OK' });
   });
 
