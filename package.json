@@ -1,12 +1,9 @@
 {
-  "name": "y",
-  "version": "y",
-  "description": "y",
-  "main": "y",
-  "repository": "y",
-  "author": "y",
-  "license": "y",
-  "private": true,
+  "name": "newave",
+  "version": "1.0.0",
+  "description": "new wave festiwal",
+  "main": "server.js",
+  "license": "MIT",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "4.17.1",
