@@ -32,25 +32,25 @@ router.route('/concerts').post((req, res) => {
 
 router.route('/concerts/:id').put((req, res) => {
 
-    const { performer, genre, price, day }  = req.body;
-    const { id } = req.params;
+  const { performer, genre, price, day }  = req.body;
+  const { id } = req.params;
 
-    db.concerts = db.concerts.map(item =>
-      item.id == id ?
-      {...item, performer: performer, genre: genre, price: price, day: day, image: image}
-      : item);
+  db.concerts = db.concerts.map(item =>
+    item.id == id ?
+    {...item, performer: performer, genre: genre, price: price, day: day, image: image}
+    : item);
 
-    console.log('db.concerts:', db.concerts);
-    res.json({ message: 'OK' });
-  });
+  console.log('db.concerts:', db.concerts);
+  res.json({ message: 'OK' });
+});
 
 router.route('/concerts/:id').delete((req, res) => {
 
-    const { id } = req.params;
+  const { id } = req.params;
 
-    db.concerts = db.concerts.filter(item => item.id != id);
-    console.log('db.concerts:', db.concerts);
-    res.json({ message: 'OK' });
-  });
+  db.concerts = db.concerts.filter(item => item.id != id);
+  console.log('db.concerts:', db.concerts);
+  res.json({ message: 'OK' });
+});
 
 module.exports = router;

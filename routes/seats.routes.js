@@ -1,7 +1,6 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../db');
-
 const uuidv4 = require('uuid/v4');
 
 router.route('/seats').get((req, res) => {
@@ -10,47 +9,51 @@ router.route('/seats').get((req, res) => {
 
 router.route('/seats/:id').get((req, res) => {
 
-    const { id } = req.params;
+  const { id } = req.params;
 
-    res.json(db.seats.find(item => item.id == id));
+  res.json(db.seats.find(item => item.id == id));
 });
 
 router.route('/seats').post((req, res) => {
 
-    const { day, seat, client, email } = req.body;
-    const data = {
-        id: uuidv4(),
-        day: day,
-        seat: seat,
-        client: client,
-        email: email
-    };
+  const { day, seat, client, email } = req.body;
+  const data = {
+    id: uuidv4(),
+    day: day,
+    seat: seat,
+    client: client,
+    email: email
+};
 
+  if(db.seats.some(item => item.seat == data.seat && item.day == data.day)) {
+    res.json({message: "The slot is already taken..."});
+  } else {
     db.seats.push(data);
     res.json({ message: 'OK' });
+  }
 });
 
 router.route('/seats/:id').put((req, res) => {
 
-    const { day, seat, client, email }  = req.body;
-    const { id } = req.params;
+  const { day, seat, client, email }  = req.body;
+  const { id } = req.params;
 
-    db.seats = db.seats.map(item =>
-      item.id === id ?
-      {...item, day: day, seat: seat, client: client, email:email}
-      : item);
+  db.seats = db.seats.map(item =>
+    item.id === id ?
+    {...item, day: day, seat: seat, client: client, email:email}
+    : item);
 
-    console.log('db.seats:', db.seats);
-    res.json({ message: 'OK' });
-  });
+  console.log('db.seats:', db.seats);
+  res.json({ message: 'OK' });
+});
 
 router.route('/seats/:id').delete((req, res) => {
 
-    const { id } = req.params;
+  const { id } = req.params;
 
-    db.seats = db.seats.filter(item => item.id != id);
-    console.log('db.seats:', db.seats);
-    res.json({ message: 'OK' });
-  });
+  db.seats = db.seats.filter(item => item.id != id);
+  console.log('db.seats:', db.seats);
+  res.json({ message: 'OK' });
+});
 
 module.exports = router;
