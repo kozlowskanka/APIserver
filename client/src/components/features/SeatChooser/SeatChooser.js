@@ -5,6 +5,10 @@ import './SeatChooser.scss';
 
 class SeatChooser extends React.Component {
   
+  state = {
+    seats: 50,
+  };
+
   componentDidMount() {
     this.socket = io.connect('http://localhost:8000');
 
@@ -33,6 +37,13 @@ class SeatChooser extends React.Component {
     else return <Button key={seatId} color="primary" className="seats__seat" outline onClick={(e) => updateSeat(e, seatId)}>{seatId}</Button>;
   }
 
+  availableSeats = () => {
+    const { seats, chosenDay } = this.props;
+    const choosenSeats = seats.filter(seat => seat.day === chosenDay).length;
+    
+    return this.state.seats - choosenSeats;
+  }
+
   render() {
 
     const { prepareSeat } = this;
@@ -46,6 +57,7 @@ class SeatChooser extends React.Component {
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].success) && <div className="seats">{[...Array(50)].map((x, i) => prepareSeat(i+1) )}</div>}
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].pending) && <Progress animated color="primary" value={50} /> }
         { (requests['LOAD_SEATS'] && requests['LOAD_SEATS'].error) && <Alert color="warning">Couldn't load seats...</Alert> }
+        <p>Free seats: {this.availableSeats()}/50</p>
       </div>
     )
   };
