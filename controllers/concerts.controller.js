@@ -27,13 +27,14 @@ exports.postNew = async (req, res) => {
   
     try {
   
-      const { performer, genre, price, day } = req.body;
+      const { performer, genre, price, day, image } = req.body;
       const newConcert = new Concert(
         {         
             performer: performer,
             genre: genre,
             price: price,
-            day: day 
+            day: day,
+            image: image
         }
       );
       await newConcert.save();
@@ -46,7 +47,7 @@ exports.postNew = async (req, res) => {
 };
 
 exports.edit = async (req, res) => {
-    const { performer, genre, price, day } = req.body;
+    const { performer, genre, price, day, image } = req.body;
   
     try {
       const concert = await(Concert.findById(req.params.id));
@@ -54,7 +55,8 @@ exports.edit = async (req, res) => {
         concert.performer = performer, 
         concert.genre = genre, 
         concert.price = price, 
-        concert.day = day, 
+        concert.day = day,
+        concert.image = image
         await concert.save();
         res.json({ concert });
       }
