@@ -10,16 +10,6 @@ const testimonialRoutes = require('./routes/testimonials.routes.js');
 const concertsRoutes = require('./routes/concerts.routes.js');
 const seatsRoutes = require('./routes/seats.routes.js');
 
-const server = app.listen(process.env.PORT || 8000, () => {
-  console.log('Server is running on port: 8000');
-});
-
-const io = socket(server);
-
-io.on('connection', (socket) => {
-  console.log('New client! Its id – ' + socket.id);
-});
-
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
@@ -44,6 +34,10 @@ db.once('open', () => {
 });
 db.on('error', err => console.log('Error ' + err));
 
+const server = app.listen(process.env.PORT || 8000, () => {
+  console.log('Server is running on port: 8000');
+});
+
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname + '/client/build/index.html'));
 });
@@ -51,3 +45,8 @@ app.use((req, res) => {
     res.status(404).json({ message: 'Not found...' });
 });
 
+const io = socket(server);
+
+io.on('connection', (socket) => {
+  console.log('New client! Its id – ' + socket.id);
+});
