@@ -87,8 +87,9 @@ exports.deleteById = async (req, res) => {
 exports.getPerformer = async (req, res) => {
 
   try {
+    const { performer } = req.params;
 
-    const concert = await Concert.find({ performer: req.params.performer });
+    const concert = await Concert.find({ performer: performer });
     if (!concert) res.status(404).json({ message: 'Not found' });
     else res.json(concert);
 
@@ -104,8 +105,30 @@ exports.getPerformer = async (req, res) => {
 exports.getGenre = async (req, res) => {
 
   try {
+    const { genre } = req.params;
 
-    const concert = await Concert.find({ genre: req.params.genre });
+    const concert = await Concert.find({ genre: genre });
+    if (!concert) res.status(404).json({ message: 'Not found' });
+    else res.json(concert);
+
+  } 
+  
+  catch (err) {
+
+    res.status(500).json({ message: err });
+
+  }
+};
+
+exports.getDay = async (req, res) => {
+
+  try {
+    const { day } = req.params;
+
+    const concert = await Concert.find({ 
+      day: parseInt(day) 
+    });
+
     if (!concert) res.status(404).json({ message: 'Not found' });
     else res.json(concert);
 
@@ -121,9 +144,16 @@ exports.getGenre = async (req, res) => {
 exports.getPrice = async (req, res) => {
 
   try {
-
-    const concert = await Concert.find({
-      price: { $and: [ {$gte: req.params.price_min}, {$lte: req.params.price_max}] },
+    const { price_min, price_max } = req.params;
+    const concert = await Concert.find({ 
+      $and: [
+        { 
+          price: { $gte: parseInt(price_min)}
+        },
+        { 
+          price: { $lte: parseInt(price_max)}
+        }
+      ],
     });
 
     if (!concert) res.status(404).json({ message: 'Not found' });
@@ -137,19 +167,3 @@ exports.getPrice = async (req, res) => {
 
 };
 
-exports.getDay = async (req, res) => {
-
-  try {
-
-    const concert = await Concert.find({ day: req.params.day });
-    if (!concert) res.status(404).json({ message: 'Not found' });
-    else res.json(concert);
-
-  } 
-  
-  catch (err) {
-
-    res.status(500).json({ message: err });
-
-  }
-};
