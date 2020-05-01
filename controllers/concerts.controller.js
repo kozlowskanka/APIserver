@@ -123,14 +123,14 @@ exports.getPrice = async (req, res) => {
   try {
 
     const concert = await Concert.find({
-      price: { $gte: req.params.price_min, $lte: req.params.price_max },
+      price: { $and: [ {$gte: req.params.price_min}, {$lte: req.params.price_max}] },
     });
 
     if (!concert) res.status(404).json({ message: 'Not found' });
     else res.json(concert);
 
   } 
-  
+
   catch (err) {
     res.status(500).json({ message: err });
   }
