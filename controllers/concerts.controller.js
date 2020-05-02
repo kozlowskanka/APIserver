@@ -126,7 +126,7 @@ exports.getDay = async (req, res) => {
     const { day } = req.params;
 
     const concert = await Concert.find({ 
-      day: parseInt(day) 
+      day: day
     });
 
     if (!concert) res.status(404).json({ message: 'Not found' });
@@ -148,10 +148,10 @@ exports.getPrice = async (req, res) => {
     const concert = await Concert.find({ 
       $and: [
         { 
-          price: { $gte: parseInt(price_min)}
+          price: { $gte: price_min }
         },
         { 
-          price: { $lte: parseInt(price_max)}
+          price: { $lte: price_max }
         }
       ],
     });
