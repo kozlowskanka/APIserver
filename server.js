@@ -28,13 +28,17 @@ app.use('/api', seatsRoutes);
 // connects our backend code with the database
 
 // mongoose.connect('mongodb://localhost:27017/NewWaveDB', { useNewUrlParser: true });
-mongoose.connect('mongodb+srv://' + process.env.LOG + ':' + process.env.PASS + '@cluster0-ucl9x.mongodb.net/NewWaveDB?retryWrites=true&w=majority', 
+// mongoose.connect('mongodb+srv://' + process.env.login + ':' + process.env.password + '@cluster0-ucl9x.mongodb.net/NewWaveDB?retryWrites=true&w=majority', 
+//   { useNewUrlParser: true, useUnifiedTopology: true });
+
+mongoose.connect('mongodb+srv://' + 'kozlowskanka' + ':' + 'NewWaveMango' + '@cluster0-ucl9x.mongodb.net/NewWaveDB?retryWrites=true&w=majority', 
   { useNewUrlParser: true, useUnifiedTopology: true });
 
 const db = mongoose.connection;
 
 db.once('open', () => {
   console.log('Connected to the database');
+  console.log('env', process.env);
 });
 db.on('error', err => console.log('Error ' + err));
 
