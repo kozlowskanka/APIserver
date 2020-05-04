@@ -3,6 +3,7 @@ const cors = require('cors');
 const path = require('path');
 const socket = require('socket.io');
 const mongoose = require('mongoose');
+const helmet = require('helmet');
 
 const app = express();
 
@@ -13,6 +14,7 @@ const seatsRoutes = require('./routes/seats.routes.js');
 app.use(cors());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use(helmet());
 
 app.use(express.static(path.join(__dirname, '/client/build')));
 
@@ -38,7 +40,6 @@ const db = mongoose.connection;
 
 db.once('open', () => {
   console.log('Connected to the database');
-  console.log('env', process.env);
 });
 db.on('error', err => console.log('Error ' + err));
 
